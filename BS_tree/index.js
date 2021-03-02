@@ -3,29 +3,44 @@ let menu, graph
 let input_list
 let inp
 let root
+let bst;
+
+
 function insert_element() {
-    if (value) {
-        input_list.push(value);
-        inp.value('')
-        value=""
+
+    if (inp.value()) {
+        // console.log("enter")
+        //input_list.push(value);
+        
+        
         //drawInputList()
-        //bst.insert(value)
-        //bst.inorder(root); 
-        console.log(input_list)
+        
+        bst.insert(inp.value())
+        let root = bst.getRootNode();
+        graph.background(250)
+        bst.printInorder(root)
+        bst.printPreorder(root)
+        bst.printPostorder(root)
+        
+        //bst.inorderList
+        //console.log(bst)
+        
+        inp.value('')
+        
     }
     
 }
-let value;
+
 function inputEvent() {
     //console.log('you are typing: ', this.value());
-    value = this.value()
+    //value = this.value()
 }
-function gui() {
+function init_gui() {
 
     // menu
     let x=15,y=15
     menu = createGraphics(windowWidth/5, windowHeight);
-    menu.background(20)
+    menu.background(0,255,255)
     inp = createInput('');
     inp.input(inputEvent);
     inp.position(x,y)
@@ -35,26 +50,36 @@ function gui() {
     btn_insert.mousePressed(insert_element);
     btn_search = createButton('search');
     btn_search.position(inp.x+btn_insert.width,inp.y+inp.height)
+    
+    
+    slider_range_from = createSlider(0,100,0)
+    slider_range_from.position(btn_search.x, btn_search.y+btn_search.height+15)
+    slider_range_to = createSlider(0,100,100)
+    slider_range_to.position(btn_search.x, slider_range_from.y+slider_range_from.height)
+    slider_num = createSlider(0,10000,10000/2)
+    slider_num.position(btn_search.x, slider_range_to.y+slider_range_to.height)
+    
+    
+
     //tree graph
     graph = createGraphics(windowWidth/5*4, windowHeight);
     graph.background(250)
+    //graph.text("inorder:"+bst.inorderList,30,30)
 }
 
 
 
 
-let bst;
+
 function setup() {
     createCanvas(windowWidth,windowHeight)
-    gui()
+    init_gui()
     background(220)
     input_list = []
-    e = []
-    i = 0
     
 
     bst = new BinarySearchTree();
-    
+    /*
     bst.insert(15); 
     bst.insert(25); 
     bst.insert(10); 
@@ -67,13 +92,21 @@ function setup() {
     bst.insert(27);
     var root = bst.getRootNode(); 
     bst.inorder(root); 
-
+    */
+    
 }
 
 function draw() {
     image(menu, 0, 0, windowWidth/5, windowHeight);
     image(graph, windowWidth/5, 0, windowWidth, windowHeight);
-    
+    menu.background(0,255,255)
+    menu.text("from:", btn_insert.x,  btn_search.y+btn_search.height+18)
+    menu.text("to:", btn_insert.x,  btn_search.y+btn_search.height+35)
+    menu.text("numbers:", btn_insert.x,  btn_search.y+btn_search.height+51)
+
+    menu.text("select "+slider_num.value()+" numbers\nfrom range: [ "+slider_range_from.value()+", "+slider_range_to.value()+" ]"
+        ,btn_insert.x, slider_num.y+slider_num.height+10)
+        
     
 }
 
@@ -96,6 +129,9 @@ class BinarySearchTree
     constructor()
     {
         this.root = null;
+        this.inorderList = []
+        this.preorderList = []
+        this.postorderList = []
     }
 
     ////////////// 新增資料 //////////////
@@ -129,13 +165,54 @@ class BinarySearchTree
     }
     ////////////// 走訪樹 //////////////
     // inorder:左中右
+    printInorder(node)
+    {
+        this.inorderList = []
+        this.inorder(node)
+        //console.log("inorder:",this.inorderList)
+        
+        graph.text("inorder:"+bst.inorderList,30,30)
+    }
+    printPreorder(node)
+    {
+        this.preorderList = []
+        this.preorder(node)
+        //console.log("preorder:",this.preorderList)
+       
+        graph.text("preorder:"+bst.preorderList,30,45)
+    }
+    printPostorder(node)
+    {
+        this.postorderList = []
+        this.postorder(node)
+        
+        graph.text("postorder:"+bst.postorderList,30,60)
+    }
     inorder(node)
     {
-        if(node !== null)
+        if (node !== null)
         {
             this.inorder(node.left)
-            console.log(node.data)
+            this.inorderList.push(node.data)//console.log(node.data)
             this.inorder(node.right)
+        }
+    }
+    preorder(node)
+    {
+        if (node !== null)
+        {
+            this.preorderList.push(node.data)
+            this.preorder(node.left)
+            this.preorder(node.right)
+        }
+    }
+    postorder(node)
+    {
+        if (node !== null)
+        {
+            this.postorder(node.left)
+            this.postorder(node.right)
+            this.postorderList.push(node.data)
         }
     }
     getRootNode() 
