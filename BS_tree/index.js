@@ -2,18 +2,22 @@
 let menu, graph
 let input_list
 let inp
+let root
 function insert_element() {
     if (value) {
         input_list.push(value);
         inp.value('')
         value=""
-        drawInputList()
+        //drawInputList()
+        //bst.insert(value)
+        //bst.inorder(root); 
+        console.log(input_list)
     }
-    console.log(input_list)
+    
 }
 let value;
 function inputEvent() {
-    console.log('you are typing: ', this.value());
+    //console.log('you are typing: ', this.value());
     value = this.value()
 }
 function gui() {
@@ -35,26 +39,11 @@ function gui() {
     graph = createGraphics(windowWidth/5*4, windowHeight);
     graph.background(250)
 }
-let e
-let i
-function num_press() {
-    //console.log(this.id)
-    inp.value(this.id)
-}
-function drawInputList() {
-    
-    
-    let number = createButton(input_list[i]);
-    number.id = input_list[i]
-    number.style("background-color","#F0F8FF")
-    number.mousePressed(num_press)
-    e.push(number)
 
-    if (i!=0) number.position((e[i-1].x+e[i-1].width),10)
-    else number.position(menu.width+10,10)
-    i++
-}
 
+
+
+let bst;
 function setup() {
     createCanvas(windowWidth,windowHeight)
     gui()
@@ -62,8 +51,23 @@ function setup() {
     input_list = []
     e = []
     i = 0
-    //pg = createGraphics(100, 100);
-    //drawInputList()
+    
+
+    bst = new BinarySearchTree();
+    
+    bst.insert(15); 
+    bst.insert(25); 
+    bst.insert(10); 
+    bst.insert(7); 
+    bst.insert(22); 
+    bst.insert(17); 
+    bst.insert(13); 
+    bst.insert(5); 
+    bst.insert(9); 
+    bst.insert(27);
+    var root = bst.getRootNode(); 
+    bst.inorder(root); 
+
 }
 
 function draw() {
@@ -76,7 +80,7 @@ function draw() {
 
 
 // Algorithm
-
+//Node class
 class Node
 {
     constructor(data)
@@ -85,4 +89,58 @@ class Node
         this.left = null
         this.right = null
     }
+}
+//BST class
+class BinarySearchTree
+{
+    constructor()
+    {
+        this.root = null;
+    }
+
+    ////////////// 新增資料 //////////////
+    // insert : 輸入:data，建立新的節點
+    insert(data)
+    {
+        let newNode = new Node(data);
+        if (this.root === null) this.root = newNode;
+        else this.insertNode(this.root, newNode) //尋找新增節點的位置
+    }
+    // insertNode : 新增進樹的方法
+    insertNode(node, newNode)
+    {
+        
+        if (newNode.data < node.data){ // new小於root node，走左邊
+            
+            if(node.left === null) { //空的可以放
+                node.left = newNode
+            } else { //有東西，往下一層遞迴找
+                this.insertNode(node.left, newNode)
+            }
+        } else { // new小於root node，走右邊
+           
+            if(node.right === null) { //空的可以放
+                node.right = newNode
+            } else { //有東西，往下一層遞迴找
+                this.insertNode(node.right, newNode)
+            }
+        }
+        
+    }
+    ////////////// 走訪樹 //////////////
+    // inorder:左中右
+    inorder(node)
+    {
+        if(node !== null)
+        {
+            this.inorder(node.left)
+            console.log(node.data)
+            this.inorder(node.right)
+        }
+    }
+    getRootNode() 
+    { 
+        return this.root; 
+    } 
+
 }
