@@ -4,8 +4,16 @@ let input_list
 let inp
 let root
 let bst;
-
-
+let drawNodeList
+function drawNode()
+{
+    console.log(drawNodeList)
+    for (let i=0; i<drawNodeList.length; i++) {
+        graph.circle(drawNodeList[i][1],drawNodeList[i][2],30 )
+        graph.text(drawNodeList[i][0],drawNodeList[i][1],drawNodeList[i][2])
+        
+    }
+}
 function insert_element() {
     graph.background(250)
     if (inp.value()) {
@@ -13,14 +21,21 @@ function insert_element() {
         //input_list.push(value);
         
         
+        let input = inp.value()
+        if ( !Number.isNaN(int(input))) {
+            input = int(input)
+        } 
         
-        bst.insert(inp.value())
+        
+        bst.insert(input)
+        
+        
         let root = bst.getRootNode();
      
         bst.printInorder(root)
         bst.printPreorder(root)
         bst.printPostorder(root)
-        
+        drawNode()
         
         inp.value('')
         
@@ -38,7 +53,7 @@ function insert_random_element() {
         bst.printPreorder(root)
         bst.printPostorder(root)
     }    
-    
+    drawNode()
 }
 
 function inputEvent() {
@@ -57,10 +72,10 @@ function init_gui() {
     inp.size(windowWidth/5-20,)
     btn_insert = createButton('insert');
     btn_insert.position(inp.x,inp.y+inp.height)
-    btn_insert.mousePressed(insert_element);
+    btn_insert.mouseClicked(insert_element);
     btn_search = createButton('search');
     btn_search.position(inp.x+btn_insert.width+10,inp.y+inp.height)
-    btn_random_insert = createButton('random integers');
+    
     
     
     slider_range_from = createSlider(0,100,0)
@@ -85,6 +100,7 @@ function init_gui() {
 
 
 function setup() {
+    drawNodeList = []
     createCanvas(windowWidth,windowHeight)
     init_gui()
     background(220)
@@ -92,20 +108,6 @@ function setup() {
     
 
     bst = new BinarySearchTree();
-    /*
-    bst.insert(15); 
-    bst.insert(25); 
-    bst.insert(10); 
-    bst.insert(7); 
-    bst.insert(22); 
-    bst.insert(17); 
-    bst.insert(13); 
-    bst.insert(5); 
-    bst.insert(9); 
-    bst.insert(27);
-    var root = bst.getRootNode(); 
-    bst.inorder(root); 
-    */
     
 }
 
@@ -135,10 +137,15 @@ class Node
         this.data = data
         this.left = null
         this.right = null
-        
+        this.x = -1
+        this.y = -1
+        //graph.circle(windowWidth/3,75,70)
+        //graph.circle(gr/2,30,30)
+
     }
 }
 //BST class
+
 class BinarySearchTree
 {
     constructor()
@@ -154,26 +161,32 @@ class BinarySearchTree
     insert(data)
     {
         let newNode = new Node(data);
-        if (this.root === null) this.root = newNode;
-        else this.insertNode(this.root, newNode) //尋找新增節點的位置
+        if (this.root === null) {
+            this.root = newNode;
+            drawNodeList.push([data,windowWidth/3,75])
+            
+        } else this.insertNode(this.root, newNode, windowWidth/3, 75) //尋找新增節點的位置
     }
     // insertNode : 新增進樹的方法
-    insertNode(node, newNode)
+    insertNode(node, newNode, x,y)
     {
         
         if (newNode.data < node.data){ // new小於root node，走左邊
             
             if(node.left === null) { //空的可以放
                 node.left = newNode
+                drawNodeList.push([newNode.data,x-60,y+60])
+                
             } else { //有東西，往下一層遞迴找
-                this.insertNode(node.left, newNode)
+                this.insertNode(node.left, newNode, x-60, y+60)
             }
         } else { // new小於root node，走右邊
            
             if(node.right === null) { //空的可以放
                 node.right = newNode
+                drawNodeList.push([newNode.data,x+60,y+60])
             } else { //有東西，往下一層遞迴找
-                this.insertNode(node.right, newNode)
+                this.insertNode(node.right, newNode, x+60, y+60)
             }
         }
         
