@@ -9,8 +9,8 @@ function drawNode()
 {
     console.log(drawNodeList)
     for (let i=0; i<drawNodeList.length; i++) {
-        graph.circle(drawNodeList[i][1],drawNodeList[i][2],30 )
-        graph.text(drawNodeList[i][0],drawNodeList[i][1],drawNodeList[i][2])
+        graph.circle(drawNodeList[i][1],drawNodeList[i][2],50 )
+        graph.text(drawNodeList[i][0],drawNodeList[i][1]-5,drawNodeList[i][2])
         
     }
 }
