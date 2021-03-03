@@ -121,6 +121,7 @@ class Node
         this.data = data
         this.left = null
         this.right = null
+        
     }
 }
 //BST class
@@ -177,8 +178,7 @@ class BinarySearchTree
     {
         this.preorderList = []
         this.preorder(node)
-        //console.log("preorder:",this.preorderList)
-       
+        
         graph.text("preorder:"+bst.preorderList,30,45)
     }
     printPostorder(node)
