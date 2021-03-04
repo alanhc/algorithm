@@ -1,5 +1,5 @@
 # Implement of Binary Search Tree
-
+[demo](BS_tree/)
 ## Usage
 
 Using Code
@@ -12,8 +12,8 @@ let bst = new BinarySearchTree()
         ```javascript
         bst.insert(21, "r") 
         // 21:number to be insert, 
-        // "r":recusive insert or set to 
-        // "n" non-recusive insert 
+        // "r" for recusive insert 
+        // "n" for non-recusive insert 
         ```
     * directly insert
         ```javascript
