@@ -1,5 +1,5 @@
 # Implement of Binary Search Tree
-[demo](BS_tree/)
+[demo](../index.html)
 ## Usage
 
 Using Code
