@@ -1,5 +1,4 @@
 # Implement of Binary Search Tree
-[demo](../index.html)
 ## Usage
 
 Using Code
