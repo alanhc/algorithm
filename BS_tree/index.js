@@ -3,8 +3,8 @@
 let bst
 function setup() {
     bst = new BinarySearchTree()
-    
-    bst.printInorder(bst.root)
+    init_gui()
+    //bst.printInorder(bst.root)
 }
 
 ////////// Algorithm //////////
