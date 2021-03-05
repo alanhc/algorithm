@@ -4,7 +4,17 @@
 
 
 ## Usage
+Using GUI
+* Insert One data (Enter value or press insert button)
+    
+    ![](../insert.gif)
 
+* Insert Many ()
+
+    ![](../insert_many.gif)
+* Search  
+  
+    ![](../search.gif)
 Using Code
 * Create a BS-tree 
 ```javascript 
