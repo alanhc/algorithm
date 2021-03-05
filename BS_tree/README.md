@@ -9,7 +9,7 @@ Using GUI
     
     ![](../insert.gif)
 
-* Insert Many ()
+* Insert Many (Select random insert and press insert)
 
     ![](../insert_many.gif)
 * Search  
