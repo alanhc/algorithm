@@ -122,7 +122,7 @@ function draw_graph()
             let x = bst.drawList[i][1]
             let y = bst.drawList[i][2]
             let size =  60/(bst.drawList[i][3]+1)
-            if (size<20) size=20
+            if (size<30) size=30
             circle(tree_root_pos.x+x,tree_root_pos.y+y,size)
             text(bst.drawList[i][0],tree_root_pos.x+x-10,tree_root_pos.y+y+5)
             
