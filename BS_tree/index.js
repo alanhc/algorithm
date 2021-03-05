@@ -2,9 +2,11 @@
 ////////// GUI //////////
 let bst
 function setup() {
+    createCanvas(windowWidth, windowHeight)
     bst = new BinarySearchTree()
     init_gui()
     //bst.printInorder(bst.root)
+    
 }
 
 ////////// Algorithm //////////
@@ -27,6 +29,8 @@ class BinarySearchTree
         this.inorderList = []
         this.preorderList = []
         this.postorderList = []
+        this.depth = 0
+        this.drawList = []
     }
     ////////////// quick_function //////////////    
     insert(data, mode) 
@@ -95,37 +99,43 @@ class BinarySearchTree
     ////////////// 走訪樹 //////////////
     printInorder(node)
     {
-        
         this.inorderList = []
-        this.inorder(node)
-        console.log(this.inorderList)
+        this.inorder(node, 0)
+        //console.log(this.inorderList)
     }
     printPreorder(node)
     {
         this.preorderList = []
-        this.preorder(node)
+        this.preorder(node,0,0,0,0,0)
+        //console.log(this.preorderList)
     }
     printPostorder(node)
     {
         this.postorderList = []
         this.postorder(node)
     }
-    inorder(node)
+    inorder(node, nowDepth)
     {
         if (node !== null)
         {
-            this.inorder(node.left)
+            this.inorder(node.left, nowDepth+1)
             this.inorderList.push(node.data)
-            this.inorder(node.right)
+            if (this.depth<nowDepth) this.depth = nowDepth
+            this.inorder(node.right, nowDepth+1)
         }
     }
-    preorder(node)
+    preorder(node,x,y, pre_x, pre_y,nowDepth)
     {
         if (node !== null)
         {
+            
             this.preorderList.push(node.data)
-            this.preorder(node.left)
-            this.preorder(node.right)
+            this.drawList.push([node.data,x,y,nowDepth,[tree_root_pos.x+pre_x, tree_root_pos.y+pre_y, tree_root_pos.x+x,tree_root_pos.y+y]])
+            let sh = (windowWidth/100*this.depth) / (nowDepth+1)
+            pre_x = x
+            pre_y = y
+            this.preorder(node.left,x-sh,y+30, pre_x,pre_y, nowDepth+1)
+            this.preorder(node.right,x+sh,y+30, pre_x,pre_y, nowDepth+1)
         }
     }
     postorder(node)
