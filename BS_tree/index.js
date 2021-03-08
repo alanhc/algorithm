@@ -1,6 +1,7 @@
 
 ////////// GUI //////////
 let bst
+
 function setup() {
     createCanvas(windowWidth, windowHeight)
     bst = new BinarySearchTree()
@@ -8,6 +9,18 @@ function setup() {
     //bst.printInorder(bst.root)
     
 }
+/*
+function setup() {
+    bst = new BinarySearchTree()
+    bst.insert(1,"r")
+    bst.insert(5,"r")
+    bst.insert(3,"r")
+    bst.insert(2,"r")
+    bst.insert(4,"r")
+    console.log("root",bst.root)
+    bst.inorder_stack(bst.root)
+    //console.log(bst.inorderList)
+}*/
 
 ////////// Algorithm //////////
 //Node class
@@ -20,6 +33,8 @@ class Node
         this.right = null
     }
 }
+
+
 //BST class
 class BinarySearchTree
 {
@@ -31,6 +46,7 @@ class BinarySearchTree
         this.postorderList = []
         this.depth = 0
         this.drawList = []
+        this.inorder_stackList = []
     }
     ////////////// quick_function //////////////    
     insert(data, mode) 
@@ -101,7 +117,7 @@ class BinarySearchTree
     {
         this.inorderList = []
         this.inorder(node, 0)
-        //console.log(this.inorderList)
+        console.log(this.inorderList)
     }
     printPreorder(node)
     {
@@ -124,6 +140,25 @@ class BinarySearchTree
             this.inorder(node.right, nowDepth+1)
         }
     }
+    ///implement of inoreder traversal (non-recursive)
+    inorder_stack(root)
+    {
+        let stackNode = []
+        let current = root
+        this.inorder_stackList = []
+        while((stackNode.length!==0) || (current!==null)) {
+            if (current !== null) {
+                stackNode.push(current)
+                current = current.left
+            } else if (stackNode.length){
+                current = stackNode.pop()
+                this.inorder_stackList.push(current.data)
+                current = current.right
+            }
+            
+        } 
+    }
+
     preorder(node,x,y, pre_x, pre_y,nowDepth)
     {
         if (node !== null)
