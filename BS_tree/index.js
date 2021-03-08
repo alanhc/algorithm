@@ -140,7 +140,7 @@ class BinarySearchTree
             this.inorder(node.right, nowDepth+1)
         }
     }
-    ///implement of inoreder traversal (non-recursive)
+    ///implement of inoreder traversal (non-recursive) 非遞迴走訪
     inorder_stack(root)
     {
         let stackNode = []

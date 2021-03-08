@@ -78,3 +78,4 @@ let bst = new BinarySearchTree()
 
 ![](demo-2.png)
 ![](demo-3.png)
+![](demo-4.png)
