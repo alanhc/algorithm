@@ -169,9 +169,10 @@ class BinarySearchTree
             
             this.preorderList.push(node.data)
             this.drawList.push([node.data,x,y,nowDepth,[tree_root_pos.x+pre_x, tree_root_pos.y+pre_y, tree_root_pos.x+x,tree_root_pos.y+y]])
-            let sh = (windowWidth/100*this.depth) / (nowDepth+1)
+            let sh = ((windowWidth/100)*this.depth) / (nowDepth+1)
             let sh_h = windowHeight/(this.depth+1) -10
             if (sh_h<15) sh_h=15
+            
             console.log(windowHeight, this.depth+1,sh_h) 
             pre_x = x
             pre_y = y
