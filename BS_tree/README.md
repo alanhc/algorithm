@@ -45,7 +45,7 @@ let bst = new BinarySearchTree()
 - [x] traverse(inorder, preorder, postorder)
 - [x] insert(recursive, non-recursive)
 - [x] find(recursive, non-recursive)
-- [ ] delete
+- [x] delete
 
 
 
@@ -79,3 +79,6 @@ let bst = new BinarySearchTree()
 ![](demo-2.png)
 ![](demo-3.png)
 ![](demo-4.png)
+![](demo-5.png)
+![](demo-6.png)
+![](demo-7.png)
