@@ -62,7 +62,43 @@ class BinarySearchTree
         if (mode=="r") return this.search_recursive(this.root, data)
         else return this.search_non_recursive(this.root, data)
     }
-
+    delete(data, mode)
+    {
+        console.log("delete",this.root)
+        this.root = this.delete_recursive(this.root,data)
+    }
+    delete_recursive(node, data)
+    {
+        if (node === null) return node
+        if (data < node.data) {
+            node.left = this.delete_recursive(node.left, data)
+        } else if (data > node.data) {
+            node.right = this.delete_recursive(node.right, data)
+        } else { //找到要刪除的node
+            if ((node.left===null)||(node.right===null)) { //一個或沒有child
+                let temp = (node.left)? node.left: node.right 
+                if (temp === null) { //沒有child
+                    temp = node
+                    node = null
+                }
+                else node = temp //一個child
+            } else { //兩個child
+                let temp = this.inorderImmediateSuccessor(node.right) // 找 中序直接後繼元素(Inorder Successor)
+                node.data = temp.data //直接取代成 中序直接後繼元素(Inorder Successor)
+                node.right = this.delete_recursive(node.right, node.data) //刪除 中序直接後繼元素(Inorder Successor)
+            }
+            /* solution 2
+            // 只有一個child 或 沒有child
+            if (node.left === null) return node.right
+            else if (node.right === null) return node.left
+            // 有兩個 child
+            let temp = this.inorderImmediateSuccessor(node.right) // 找 中序直接後繼元素(Inorder Successor)
+            node.data = temp.data //直接取代成 中序直接後繼元素(Inorder Successor)
+            node.right = this.delete_recursive(node.right, node.data) //刪除 中序直接後繼元素(Inorder Successor)
+            */
+        }
+        return node
+    }
     ////////////// 操作樹 implement operations //////////////
     insert_recursive(node, data)
     {
@@ -113,6 +149,15 @@ class BinarySearchTree
         }
         return null //沒找到
     }
+    inorderImmediateSuccessor(node)
+    {
+        let p = node
+        while (p.left!==null) {
+            p = p.left
+        } 
+        return p
+    }
+    
     ////////////// 走訪樹 //////////////
     printInorder(node)
     {
@@ -173,7 +218,7 @@ class BinarySearchTree
             let sh_h = windowHeight/(this.depth+1) -10
             if (sh_h<15) sh_h=15
             
-            console.log(windowHeight, this.depth+1,sh_h) 
+            //console.log(windowHeight, this.depth+1,sh_h) 
             pre_x = x
             pre_y = y
             this.preorder(node.left,x-sh,y+sh_h, pre_x,pre_y, nowDepth+1)

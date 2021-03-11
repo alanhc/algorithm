@@ -6,21 +6,48 @@ function update_traversal() {
     bst.printInorder(bst.root)
     bst.printPreorder(bst.root)
     bst.printPostorder(bst.root)
-    console.log("depth",bst.depth)
-    console.log("width", bst.max_width)
+    //console.log("depth",bst.depth)
+    //console.log("width", bst.max_width)
     bst.inorder_stack(bst.root)
     label_out.html("Inorder(recursive):"+bst.inorderList+"<br>Inorder(non-recursive):"+bst.inorder_stackList+"<br>Preorder:"+bst.preorderList+"<br>Postorder:"+bst.postorderList)
     draw_graph()
+}
+function delete_element() {
+    let input = inp.value()
+    let mode_f = (check_search.checked())? "r":"n"
+    if (bst.find(input,mode_f)===null && input!="") {
+        bst.delete(input,"r")
+    }
+    inp.value("")
+    update_traversal()
 }
 function insert_element()
 {
     let mode = (check_insert.checked())? "r":"n"
     let mode_f = (check_search.checked())? "r":"n"
+    
     if (check_random.checked()) { //random insert
+        let _try = 0;
         for (let i=0; i<slider_number.value(); i++) {
             let n = int(random(slider_range_from.value(), slider_range_to.value()))
-            if (bst.find(n,mode_f)===null) bst.insert(n,mode)
-            else i-=1
+            //console.log(n)
+            if (bst.find(n,mode_f)===null) {
+                //console.log("insert", n)
+                bst.insert(n,mode)
+            }
+            else {
+                
+                if (_try=== slider_number.value()) {
+                    i = slider_number.value()+10
+                    label_find.html("Can not insert!  all number in range has been inserted!")
+                    break
+                } else {
+                    i-=1;
+                    _try+=1
+                }
+                    //
+
+            }
         }
         inp.value("")
     } else if (inp.value()!=="") {
@@ -90,9 +117,11 @@ function init_gui() {
     
     let btn_insert = createButton('insert');
     let btn_search = createButton('search');
-    
+    let btn_delete = createButton('delete');
+
     btn_insert.mouseClicked(insert_element)
     btn_search.mouseClicked(search_element)
+    btn_delete.mouseClicked(delete_element)
     label_find = createP("")
 
     label_out.position(slider_number.x,15)
@@ -106,6 +135,7 @@ function init_gui() {
     check_random.position(slider_range_from.x,check_insert.y+check_insert.height)
     btn_insert.position(slider_range_from.x,check_random.y+check_random.height)
     btn_search.position(btn_insert.x+btn_insert.width, btn_insert.y+btn_insert.height)
+    btn_delete.position(btn_search.x+btn_search.width, btn_search.y+btn_search.height)
     label_find.position(slider_range_from.x,btn_search.y+btn_search.height)
     slider_change()
     update_traversal()
@@ -116,7 +146,7 @@ function draw_graph()
     background(255)
     if(bst.preorderList.length!==0) {
         
-        console.log(bst.drawList) 
+        //console.log(bst.drawList) 
         for (let i=0; i<bst.drawList.length; i++) {
             line(bst.drawList[i][4][0],bst.drawList[i][4][1],bst.drawList[i][4][2],bst.drawList[i][4][3])
         }
