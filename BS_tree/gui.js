@@ -7,6 +7,7 @@ function update_traversal() {
     bst.printPreorder(bst.root)
     bst.printPostorder(bst.root)
     console.log("depth",bst.depth)
+    console.log("width", bst.max_width)
     bst.inorder_stack(bst.root)
     label_out.html("Inorder(recursive):"+bst.inorderList+"<br>Inorder(non-recursive):"+bst.inorder_stackList+"<br>Preorder:"+bst.preorderList+"<br>Postorder:"+bst.postorderList)
     draw_graph()

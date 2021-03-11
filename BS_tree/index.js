@@ -45,6 +45,7 @@ class BinarySearchTree
         this.preorderList = []
         this.postorderList = []
         this.depth = 0
+        this.max_width = 0
         this.drawList = []
         this.inorder_stackList = []
     }
@@ -116,8 +117,9 @@ class BinarySearchTree
     printInorder(node)
     {
         this.inorderList = []
-        this.inorder(node, 0)
-        console.log(this.inorderList)
+        this.inorder(node, 0, 0)
+        //console.log(this.inorderList)
+        
     }
     printPreorder(node)
     {
@@ -130,14 +132,15 @@ class BinarySearchTree
         this.postorderList = []
         this.postorder(node)
     }
-    inorder(node, nowDepth)
+    inorder(node, nowDepth, x)
     {
         if (node !== null)
         {
-            this.inorder(node.left, nowDepth+1)
+            this.inorder(node.left, nowDepth+1, x-1)
             this.inorderList.push(node.data)
             if (this.depth<nowDepth) this.depth = nowDepth
-            this.inorder(node.right, nowDepth+1)
+            if (this.max_width<Math.abs(x)) this.max_width = Math.abs(x)
+            this.inorder(node.right, nowDepth+1, x+1)
         }
     }
     ///implement of inoreder traversal (non-recursive) 非遞迴走訪
@@ -167,10 +170,13 @@ class BinarySearchTree
             this.preorderList.push(node.data)
             this.drawList.push([node.data,x,y,nowDepth,[tree_root_pos.x+pre_x, tree_root_pos.y+pre_y, tree_root_pos.x+x,tree_root_pos.y+y]])
             let sh = (windowWidth/100*this.depth) / (nowDepth+1)
+            let sh_h = windowHeight/(this.depth+1) -10
+            if (sh_h<15) sh_h=15
+            console.log(windowHeight, this.depth+1,sh_h) 
             pre_x = x
             pre_y = y
-            this.preorder(node.left,x-sh,y+30, pre_x,pre_y, nowDepth+1)
-            this.preorder(node.right,x+sh,y+30, pre_x,pre_y, nowDepth+1)
+            this.preorder(node.left,x-sh,y+sh_h, pre_x,pre_y, nowDepth+1)
+            this.preorder(node.right,x+sh,y+sh_h, pre_x,pre_y, nowDepth+1)
         }
     }
     postorder(node)
