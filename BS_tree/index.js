@@ -48,6 +48,10 @@ class BinarySearchTree
         this.max_width = 0
         this.drawList = []
         this.inorder_stackList = []
+        this.preorder_stackList = []
+        this.postorder_stackList = []
+        this.levelOrder_travesal = []
+
     }
     ////////////// quick_function //////////////    
     insert(data, mode) 
@@ -177,6 +181,78 @@ class BinarySearchTree
         this.postorderList = []
         this.postorder(node)
     }
+    level_order(node)
+    {
+        
+        if (node!==null) {
+            this.levelOrder_travesal = []
+            let queue_tmp = []
+            queue_tmp.push(node)
+            while(queue_tmp.length) {
+                let front = queue_tmp.shift()
+                this.levelOrder_travesal.push(front.data)
+                console.log(queue_tmp)
+                if (front.left!==null) queue_tmp.push(front.left)
+                if (front.right!==null) queue_tmp.push(front.right)
+            }
+            console.log(this.levelOrder_travesal, "----")
+        }    
+        
+    }
+    ///implement of (non-recursive) traversal  非遞迴走訪
+    inorder_stack(root)
+    {
+        let stackNode = []
+        let current = root
+        this.inorder_stackList = []
+        while((stackNode.length!==0) || (current!==null)) {
+            if (current !== null) {
+                stackNode.push(current) 
+                current = current.left //左
+            } else if (stackNode.length){
+                current = stackNode.pop()
+                this.inorder_stackList.push(current.data) //中
+                current = current.right //右
+            }
+        } 
+    }
+    preorder_stack(root)
+    {
+        let stackNode = []
+        let current = root
+        this.preorder_stackList = []
+        while((stackNode.length!==0) || (current!==null)) {
+            if (current !== null) {
+                this.preorder_stackList.push(current.data) //中
+                stackNode.push(current) 
+                current = current.left //左
+            } else if (stackNode.length){
+                current = stackNode.pop()
+                current = current.right //右
+            }
+        } 
+       
+    }
+    postorder_stack(root)
+    {
+        let stackNode = []
+        let current = root
+        let temp = []
+        while((stackNode.length!==0) || (current!==null)) {
+            if (current !== null) {
+                temp.push(current.data) //中
+                stackNode.push(current) 
+                current = current.right //右
+            } else if (stackNode.length){
+                current = stackNode.pop()
+                current = current.left //左
+            }
+        }
+
+        this.postorder_stackList = temp.reverse()
+       
+    }
+    // implement of (recursive) traversal  遞迴走訪
     inorder(node, nowDepth, x)
     {
         if (node !== null)
@@ -188,25 +264,6 @@ class BinarySearchTree
             this.inorder(node.right, nowDepth+1, x+1)
         }
     }
-    ///implement of inoreder traversal (non-recursive) 非遞迴走訪
-    inorder_stack(root)
-    {
-        let stackNode = []
-        let current = root
-        this.inorder_stackList = []
-        while((stackNode.length!==0) || (current!==null)) {
-            if (current !== null) {
-                stackNode.push(current)
-                current = current.left
-            } else if (stackNode.length){
-                current = stackNode.pop()
-                this.inorder_stackList.push(current.data)
-                current = current.right
-            }
-            
-        } 
-    }
-
     preorder(node,x,y, pre_x, pre_y,nowDepth)
     {
         if (node !== null)
