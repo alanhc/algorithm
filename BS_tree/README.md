@@ -42,7 +42,9 @@ let bst = new BinarySearchTree()
         bst.insert_non_recursive(node, data)
         ```
 ## Todo
-- [x] traverse(inorder, preorder, postorder)
+- [x] non-recursive-traversal(inorder, preorder, postorder)
+- [x] recursive-traversal(inorder, preorder, postorder)
+- [x] level-order-traversal
 - [x] insert(recursive, non-recursive)
 - [x] find(recursive, non-recursive)
 - [x] delete
@@ -53,7 +55,7 @@ let bst = new BinarySearchTree()
 ==============================
 
 作業 1 : Binary Search Tree (BST) 的建置、查詢(Search)與走訪(Inorder)
-
+作業 2 : 
  
 
 功能需求 (可參考上課 powercam:二元樹的新增與走訪)：
@@ -82,3 +84,5 @@ let bst = new BinarySearchTree()
 ![](demo-5.png)
 ![](demo-6.png)
 ![](demo-7.png)
+![](demo-8.png)
+![](demo-9.png)
