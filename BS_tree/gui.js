@@ -19,8 +19,9 @@ function update_traversal() {
 function delete_element() {
     let input = inp.value()
     let mode_f = (check_search.checked())? "r":"n"
+    let mode_d = (check_delete.checked())? "r":"n"
     if (bst.find(input,mode_f)===null && input!="") {
-        bst.delete(input,"r")
+        bst.delete(input,mode_d)
     }
     inp.value("")
     update_traversal()
@@ -83,7 +84,8 @@ function keyTyped() {
 
 let label_config, slider_range_from, slider_range_to, slider_number,check_random, inp,label_out,check_insert,check_search
 let tree_root_pos;
-let check_recursive_traversal
+let check_recursive_traversal, check_delete
+let inp_infix, inp_prefix, inp_postfix
 function init_gui() {
     createCanvas(windowWidth, windowHeight)
     tree_root_pos = {x:windowWidth/2, y:100}
@@ -111,12 +113,17 @@ function init_gui() {
 
     
     let menu = {x:15,y:15} 
+    
     inp = createInput('');
-    inp.attribute('placeholder', 'Enter value');
+    inp.attribute('placeholder', 'Enter value to Insert one');
+    
+    
     //inp.position(menu.x,menu.y)
     
     check_search = createCheckbox('recursive find', true);
     check_insert = createCheckbox('recursive insert', true);
+    check_delete = createCheckbox('recursive delete', true);
+    
     check_random = createCheckbox('random insert', false);
     check_recursive_traversal = createCheckbox('recursive_traversal', false);
     check_recursive_traversal.changed(update_traversal);
@@ -131,6 +138,14 @@ function init_gui() {
     btn_search.mouseClicked(search_element)
     btn_delete.mouseClicked(delete_element)
     label_find = createP("")
+    inp_infix = createInput('');
+    inp_prefix = createInput('');
+    inp_postfix = createInput('');
+    inp_infix.attribute('placeholder', 'infix');
+    inp_prefix.attribute('placeholder', 'prefix');
+    inp_postfix.attribute('placeholder', 'postfix');
+    
+    
 
     label_out.position(slider_number.x,15)
 
@@ -141,12 +156,18 @@ function init_gui() {
     inp.position(slider_range_from.x,slider_range_to.y+slider_range_to.height)
     check_search.position(slider_range_from.x,inp.y+inp.height)
     check_insert.position(slider_range_from.x,check_search.y+check_search.height)
-    check_random.position(slider_range_from.x,check_insert.y+check_insert.height)
+    check_delete.position(slider_range_from.x,check_insert.y+check_insert.height)
+    
+    check_random.position(slider_range_from.x,check_delete.y+check_delete.height)
     check_recursive_traversal.position(slider_range_from.x,check_random.y+check_random.height)
     btn_insert.position(slider_range_from.x,check_recursive_traversal.y+check_recursive_traversal.height)
     btn_search.position(btn_insert.x+btn_insert.width, btn_insert.y+btn_insert.height)
     btn_delete.position(btn_search.x+btn_search.width, btn_search.y+btn_search.height)
     label_find.position(slider_range_from.x,btn_search.y+btn_search.height)
+    inp_infix.position(windowWidth-inp_infix.width,50)
+    inp_prefix.position(windowWidth-inp_prefix.width,inp_infix.y+inp_infix.height)
+    inp_postfix.position(windowWidth-inp_postfix.width,inp_prefix.y+inp_prefix.height)
+    
     slider_change()
     update_traversal()
 }

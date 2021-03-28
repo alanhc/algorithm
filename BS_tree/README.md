@@ -48,6 +48,17 @@ let bst = new BinarySearchTree()
 - [x] insert(recursive, non-recursive)
 - [x] find(recursive, non-recursive)
 - [x] delete
+### HW2
+- [x] inorder-non-recursive traversal
+- [x] postorder-non-recursive traversal
+- [x] preorder-non-recursive traversal
+- [x] levelorder traversal
+- [x] insert-non-recursive
+- [x] delete-non-recursive(extra points)
+- [x] search-non-recursive
+- [ ] determing a tree - infix-prefix
+- [ ] determing a tree - infix-postfix
+- [ ] determing a tree - infix-levelorder(extra points)
 
 
 

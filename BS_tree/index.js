@@ -7,7 +7,18 @@ function setup() {
     bst = new BinarySearchTree()
     init_gui()
     //bst.printInorder(bst.root)
+    //let tree = bst.prefix_infix("ABHJCDFGE", "HBJAFDGCE")
+    //let tree = bst.postfix_infix("HJBFGDECA", "HBJAFDGCE")
+    //let tree = bst.levelorder_infix("ABCHJDEFG", "HBJAFDGCE")
+    //let tree = bst.levelorder_infix([20,8,22,4,12,10,14], [4,8,10,12,14,20,22])
     
+    //console.log(tree)
+
+    //bst.printPostorder(tree)
+    //bst.printInorder(tree)
+    //bst.level_order(tree)
+    
+
 }
 /*
 function setup() {
@@ -68,8 +79,51 @@ class BinarySearchTree
     }
     delete(data, mode)
     {
-        console.log("delete",this.root)
-        this.root = this.delete_recursive(this.root,data)
+        if (mode=="r") this.root = this.delete_recursive(this.root,data)
+        else this.root = this.delete_non_recursive(this.root,data)
+        console.log(bst.root)
+        //this.root = this.delete_recursive(this.root,data)
+    }
+    delete_non_recursive(root, data)
+    {
+        data = Number(data)
+        let now = root, father=null
+        //檢查bst裡面有沒有尋找元素，father為要找節點的父親
+        while (now!==null && now.data!==data) {
+            father = now
+            if (data>now.data) now = now.right
+            else now = now.left
+            //console.log("=",typeof now.data, typeof data, now.data === data)
+        }
+        if (now===null) {// 沒有找到
+            console.log("not found")
+            return root
+        }
+        //檢查node是不超過ㄧ個child(一個/零個)
+        if (now.left===null || now.right===null) {
+            
+            // newNow為刪除節點的child
+            let newNow = null
+            
+            if (now.left === null) newNow = now.right
+            else newNow = now.left
+            
+            
+            //要刪除的是root
+            if (father===null) return newNow
+            //接回去father
+            if (now===father.left) father.left = newNow
+            else father.right = newNow
+            now = null
+            
+        } else { //有兩個child
+            console.log("2 child")
+            let temp = this.inorderImmediateSuccessor(now.right) //後繼節點
+            now.data = temp.data
+            this.delete_non_recursive(now.right, now.data)
+        }
+        return root
+        
     }
     delete_recursive(node, data)
     {
@@ -167,19 +221,20 @@ class BinarySearchTree
     {
         this.inorderList = []
         this.inorder(node, 0, 0)
-        //console.log(this.inorderList)
+        console.log("printInorder:", this.inorderList)
         
     }
     printPreorder(node)
     {
         this.preorderList = []
         this.preorder(node,0,0,0,0,0)
-        //console.log(this.preorderList)
+        console.log("printPreorder:", this.preorderList)
     }
     printPostorder(node)
     {
         this.postorderList = []
         this.postorder(node)
+        console.log("printPostorder:", this.postorderList)
     }
     level_order(node)
     {
@@ -191,11 +246,11 @@ class BinarySearchTree
             while(queue_tmp.length) {
                 let front = queue_tmp.shift()
                 this.levelOrder_travesal.push(front.data)
-                console.log(queue_tmp)
+                //console.log(queue_tmp)
                 if (front.left!==null) queue_tmp.push(front.left)
                 if (front.right!==null) queue_tmp.push(front.right)
             }
-            console.log(this.levelOrder_travesal, "----")
+            console.log("printLevelOrder:", this.levelOrder_travesal)
         }    
         
     }
@@ -290,6 +345,46 @@ class BinarySearchTree
             this.postorder(node.right)
             this.postorderList.push(node.data)
         }
+    }
+
+    // Derterming a tree
+    prefix_infix(prefix_list, infix_list)
+    {
+        if (infix_list.length===0) return null
+        let node = new Node(prefix_list[0])
+        let n_idx = infix_list.indexOf(node.data)
+        console.log(n_idx, node.data)
+        node.left = this.prefix_infix(prefix_list.slice(1, n_idx+1), infix_list.slice(0, n_idx) )
+        node.right = this.prefix_infix(prefix_list.slice(n_idx+1, ), infix_list.slice(n_idx+1, ) )
+        return node
+    }
+    postfix_infix(postfix_list, infix_list)
+    {
+        console.log("-", postfix_list, infix_list)
+        if (infix_list.length===0) return null
+        let node = new Node(postfix_list[postfix_list.length-1]) //拿最後
+        let n_idx = infix_list.indexOf(node.data)
+        node.left = this.postfix_infix(postfix_list.slice(0, n_idx), infix_list.slice(0, n_idx) )
+        node.right = this.postfix_infix(postfix_list.slice(n_idx, -1), infix_list.slice(n_idx+1, ) )
+        return node
+    }
+    levelorder_infix(levelorder_list, infix_list)
+    {
+        if (infix_list.length===0) return null
+        
+        let node, n_idx
+        //找infix_list裡，第i個levelorder_list index
+        for (let i=0; i<levelorder_list.length; i++) {
+            if (infix_list.includes(levelorder_list[i])) {
+                node = new Node(levelorder_list[i])
+                console.log(node.data)
+                n_idx = infix_list.indexOf(node.data)
+                break
+            }
+        }
+        node.left = this.levelorder_infix(levelorder_list, infix_list.slice(0,n_idx))
+        node.right = this.levelorder_infix(levelorder_list, infix_list.slice(n_idx+1,))
+        return node
     }
 }
 
