@@ -2,6 +2,21 @@
 function slider_change() {
     label_config.html("select "+slider_number.value()+" numbers <br>from: [ "+slider_range_from.value()+", "+slider_range_to.value()+" ]")
 }
+function construct_tree_pre()
+{
+    bst.root = bst.prefix_infix(inp_otherfix.value(), inp_infix.value())
+    update_traversal()
+}
+function construct_tree_post()
+{
+    bst.root = bst.postfix_infix(inp_otherfix.value(), inp_infix.value())
+    update_traversal()
+}
+function construct_tree_level()
+{
+    bst.root = bst.levelorder_infix(inp_otherfix.value(), inp_infix.value())
+    update_traversal()
+}
 function update_traversal() {
     bst.printInorder(bst.root)
     bst.printPreorder(bst.root)
@@ -26,6 +41,7 @@ function delete_element() {
     inp.value("")
     update_traversal()
 }
+
 function insert_element()
 {
     let mode = (check_insert.checked())? "r":"n"
@@ -85,7 +101,7 @@ function keyTyped() {
 let label_config, slider_range_from, slider_range_to, slider_number,check_random, inp,label_out,check_insert,check_search
 let tree_root_pos;
 let check_recursive_traversal, check_delete
-let inp_infix, inp_prefix, inp_postfix
+let inp_infix, inp_otherfix
 function init_gui() {
     createCanvas(windowWidth, windowHeight)
     tree_root_pos = {x:windowWidth/2, y:100}
@@ -137,14 +153,21 @@ function init_gui() {
     btn_insert.mouseClicked(insert_element)
     btn_search.mouseClicked(search_element)
     btn_delete.mouseClicked(delete_element)
+    
     label_find = createP("")
     inp_infix = createInput('');
-    inp_prefix = createInput('');
-    inp_postfix = createInput('');
+    inp_otherfix = createInput('');
     inp_infix.attribute('placeholder', 'infix');
-    inp_prefix.attribute('placeholder', 'prefix');
-    inp_postfix.attribute('placeholder', 'postfix');
+    inp_otherfix.attribute('placeholder', 'prefix/postfix/levelorder');
     
+    btn_construct_prefix = createButton('construct tree(in-pre)');
+    btn_construct_postfix = createButton('construct tree(in-post)');
+    btn_construct_levelOrder = createButton('construct tree(in-level)');
+    
+    
+    btn_construct_prefix.mouseClicked(construct_tree_pre)
+    btn_construct_postfix.mouseClicked(construct_tree_post)
+    btn_construct_levelOrder.mouseClicked(construct_tree_level)
     
 
     label_out.position(slider_number.x,15)
@@ -165,8 +188,10 @@ function init_gui() {
     btn_delete.position(btn_search.x+btn_search.width, btn_search.y+btn_search.height)
     label_find.position(slider_range_from.x,btn_search.y+btn_search.height)
     inp_infix.position(windowWidth-inp_infix.width,50)
-    inp_prefix.position(windowWidth-inp_prefix.width,inp_infix.y+inp_infix.height)
-    inp_postfix.position(windowWidth-inp_postfix.width,inp_prefix.y+inp_prefix.height)
+    inp_otherfix.position(windowWidth-inp_otherfix.width,inp_infix.y+inp_infix.height)
+    btn_construct_prefix.position(windowWidth-inp_otherfix.width,inp_otherfix.y+inp_otherfix.height)
+    btn_construct_postfix.position(windowWidth-inp_otherfix.width,btn_construct_prefix.y+btn_construct_prefix.height)
+    btn_construct_levelOrder.position(windowWidth-inp_otherfix.width,btn_construct_postfix.y+btn_construct_postfix.height)
     
     slider_change()
     update_traversal()
