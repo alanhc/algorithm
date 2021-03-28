@@ -6,6 +6,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight)
     bst = new BinarySearchTree()
     init_gui()
+    //let a = [-3,-76,89,13,52]
+    //console.log(a.slice(1,2))
     //bst.printInorder(bst.root)
     //let tree = bst.prefix_infix("ABHJCDFGE", "HBJAFDGCE")
     //let tree = bst.postfix_infix("HJBFGDECA", "HBJAFDGCE")
@@ -350,17 +352,29 @@ class BinarySearchTree
     // Derterming a tree
     prefix_infix(prefix_list, infix_list)
     {
+        if (infix_list.includes(",")) {
+            prefix_list = prefix_list.split(",")
+            infix_list = infix_list.split(",")
+        }
+        
+        
+        
         if (infix_list.length===0) return null
         let node = new Node(prefix_list[0])
         let n_idx = infix_list.indexOf(node.data)
-        console.log(n_idx, node.data)
         node.left = this.prefix_infix(prefix_list.slice(1, n_idx+1), infix_list.slice(0, n_idx) )
         node.right = this.prefix_infix(prefix_list.slice(n_idx+1, ), infix_list.slice(n_idx+1, ) )
         return node
+        
+        
+        
     }
     postfix_infix(postfix_list, infix_list)
     {
-        console.log("-", postfix_list, infix_list)
+        if (infix_list.includes(",")) {
+            postfix_list = postfix_list.split(",")
+            infix_list = infix_list.split(",")
+        }
         if (infix_list.length===0) return null
         let node = new Node(postfix_list[postfix_list.length-1]) //拿最後
         let n_idx = infix_list.indexOf(node.data)
@@ -370,6 +384,10 @@ class BinarySearchTree
     }
     levelorder_infix(levelorder_list, infix_list)
     {
+        if (infix_list.includes(",")) {
+            levelorder_list = levelorder_list.split(",")
+            infix_list = infix_list.split(",")
+        }
         if (infix_list.length===0) return null
         
         let node, n_idx
