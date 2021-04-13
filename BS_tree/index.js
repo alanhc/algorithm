@@ -64,15 +64,18 @@ class BinarySearchTree
         this.preorder_stackList = []
         this.postorder_stackList = []
         this.levelOrder_travesal = []
-
+        this.print_List=[]
     }
     ////////////// quick_function //////////////    
     insert(data, mode) 
     {
-        if (this.root === null) {
-            if (mode=="r") this.root = bst.insert_recursive(null, data)
-            else this.root = this.insert_non_recursive(null,data)
-        } else this.insert_recursive(this.root, data)
+        if (this.root===null) {
+            let node = new Node(data)
+            this.root = node
+        } else  {
+            if (mode === 'r') this.root = this.insert_recursive(this.root, data)
+            else  this.insert_non_recursive(this.root, data)
+        } 
     }
     find(data, mode)
     {
@@ -166,6 +169,9 @@ class BinarySearchTree
             let newNode = new Node(data);
             return newNode;
         }
+        if (node.data==data) {
+            return node
+        }
         if (data < node.data){ // new小於root node，走左邊
             node.left =  this.insert_recursive(node.left, data) 
         } else { // new小於root node，走右邊
@@ -182,6 +188,7 @@ class BinarySearchTree
         //使用p,q移到bst中的新增位置
         let p = root, q = null
         while ( p!==null ) {
+            if (data===p.data) return 0
             q = p
             if (data < p.data) p = p.left //往左邊
             else p = p.right //往右邊
@@ -350,8 +357,12 @@ class BinarySearchTree
     }
 
     // Derterming a tree
-    prefix_infix(prefix_list, infix_list)
+    prefix_infix(prefix_list, infix_list, left_right)
     {
+        //this.print_List = []
+        let log = String(left_right+ prefix_list+" vs "+ infix_list)
+        this.print_List.push(log)
+        console.log(log)
         if (infix_list.includes(",")) {
             prefix_list = prefix_list.split(",")
             infix_list = infix_list.split(",")
@@ -362,15 +373,22 @@ class BinarySearchTree
         if (infix_list.length===0) return null
         let node = new Node(prefix_list[0])
         let n_idx = infix_list.indexOf(node.data)
-        node.left = this.prefix_infix(prefix_list.slice(1, n_idx+1), infix_list.slice(0, n_idx) )
-        node.right = this.prefix_infix(prefix_list.slice(n_idx+1, ), infix_list.slice(n_idx+1, ) )
+        node.left = this.prefix_infix(prefix_list.slice(1, n_idx+1), infix_list.slice(0, n_idx) ,"left:")
+        
+        node.right = this.prefix_infix(prefix_list.slice(n_idx+1, ), infix_list.slice(n_idx+1, ) ,"right:")
+        
         return node
         
         
         
     }
-    postfix_infix(postfix_list, infix_list)
+    postfix_infix(postfix_list, infix_list, left_right)
     {
+     
+        let log = left_right+ postfix_list+" vs "+ infix_list
+        this.print_List.push(log)
+        console.log(log)
+        
         if (infix_list.includes(",")) {
             postfix_list = postfix_list.split(",")
             infix_list = infix_list.split(",")
@@ -378,12 +396,13 @@ class BinarySearchTree
         if (infix_list.length===0) return null
         let node = new Node(postfix_list[postfix_list.length-1]) //拿最後
         let n_idx = infix_list.indexOf(node.data)
-        node.left = this.postfix_infix(postfix_list.slice(0, n_idx), infix_list.slice(0, n_idx) )
-        node.right = this.postfix_infix(postfix_list.slice(n_idx, -1), infix_list.slice(n_idx+1, ) )
+        node.left = this.postfix_infix(postfix_list.slice(0, n_idx), infix_list.slice(0, n_idx) , "left:")
+        node.right = this.postfix_infix(postfix_list.slice(n_idx, -1), infix_list.slice(n_idx+1, ) , "right:")
         return node
     }
     levelorder_infix(levelorder_list, infix_list)
     {
+ 
         if (infix_list.includes(",")) {
             levelorder_list = levelorder_list.split(",")
             infix_list = infix_list.split(",")
