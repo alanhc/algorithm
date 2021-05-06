@@ -13,7 +13,10 @@ class MaxHeap {
     this.exeTime = 0;
   }
   insert(x) {
-    if (this.n === this.maxSize) return -1;
+    if (this.n === this.maxSize) {
+      this.heap.push(Array(this.maxSize).fill(0, 0, this.maxSize))
+      console.log(this.heap)
+    }
     // heap 滿了
     else {
       this.n++;
@@ -27,7 +30,7 @@ class MaxHeap {
     }
   }
   deleteMax() {
-    if (this.n === 0) return -1;
+    if (this.n === 0) return "empty";
     else {
       let x = this.heap[1];
       this.heap[1] = this.heap[this.n];
@@ -111,15 +114,7 @@ let data =
     },
 ]
 
-///draw test
-let button
-let trys = []
-function setup() {
-    button = createButton('draw execution time');
-    button.position(10,10);
 
-    button.mousePressed(drawChart);  
-}
 function caculate_time()
 {
     for (let i=0; i<data.length; i++) {
@@ -157,6 +152,21 @@ function caculate_time()
      
     }
 }
+
+
+///draw test
+let button
+let trys = []
+function setup() {
+    createCanvas(windowWidth, windowHeight)
+    background(220)
+    
+    button = createButton('draw execution time');
+    button.position(10,10);
+    button.mousePressed(drawChart);  
+    initGUI()
+}
+
 function drawChart()
 {   
     caculate_time()
