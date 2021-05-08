@@ -83,7 +83,7 @@ function delete_element()
     let n = hp.deleteMax()
     label_delete.html(n+" has been deleted")
     label_out.html("heap: "+hp.heap.slice(1,hp.n+1)+"<br>sorted:"+hp.sort().slice(0,hp.n))
-    
+    updateGUI()
 }
 function keyTyped() {
     if (key==="Enter") insert_element()
@@ -94,11 +94,12 @@ function getHeight(x) {
 function updateGUI()
 {
     background(220)
-    let length = hp.heap.length-1
+    let length = hp.n+1
+  
     let depth = getHeight(length)
     console.log("length:",length, getHeight(length) ,"windowWidth", windowWidth)
     let pos = []
-    for(let i=1; i<length+1; i++) {
+    for(let i=1; i<length; i++) {
         // getHeight("=",i)//hp.heap[i+1]
         
         let h = windowHeight/(depth+1)
@@ -106,12 +107,12 @@ function updateGUI()
         let k_max_node = Math.pow(2,k)
         let w = windowWidth / (k_max_node+1)
         let idx_in_depth_k =  i-Math.pow(2,k) 
-        let y = k*h +50
+        let y = k*h + 50
         let x = windowWidth/2  + idx_in_depth_k*w - (k_max_node-1)*w/2//- k*(windowWidth/k)//+ (idx_in_depth_k)*w//- (i-1)*w//sh*w//+ w//- int(w/4) + w*(i-1)
-        
         
         pos.push([x,y])
     }
+    
     if (pos.length>1) line(pos[0][0], pos[0][1], pos[1][0], pos[1][1])
     if (pos.length>2) line(pos[0][0], pos[0][1], pos[2][0], pos[2][1])
 
