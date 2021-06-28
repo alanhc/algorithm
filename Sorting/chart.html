@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="index.js"></script>
+    <script src="gui.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart"></canvas>
+    <script>
+      let params = new URLSearchParams(location.search);
+      //let labels = JSON.parse(params.get("labels"));
+      //let datasets = JSON.parse(params.get("datasets"));
+      let datasets =  localStorage.getItem('datasets') 
+      datasets = JSON.parse(datasets)
+      let labels = localStorage.getItem('labels') 
+      labels = JSON.parse(labels)
+      
+      let config = {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: datasets,
+        },
+        options: {
+          scales: {
+            y: {
+                title:{
+                    display:true,
+                    text: 'time (millis)'
+                }
+            },
+            x: {
+                title:{
+                    display:true,
+                    text: 'data'
+                }
+            },
+          },
+        },
+      };
+      let ctx = document.getElementById("myChart");
+
+      let myChart = new Chart(ctx, config);
+      
+    </script>
+  </body>
+</html>

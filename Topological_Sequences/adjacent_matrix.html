@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <script src="https://unpkg.com/d3@4.10.0/build/d3.min.js"></script>
+    <title>Adjacent Matrix</title>
+  </head>
+  <body>
+    <table class="objecttable">
+     <thead>
+     <!--<tr><th>name</th><th>age</th><th>gender</th></tr>-->
+     </thead>
+     <tbody></tbody>
+    </table>
+    <style>
+     .objecttable td {
+       padding: 8px;
+       
+     }
+     .objecttable ,th,td{
+        border: 1px solid blue;
+     }
+    </style>
+    <script>
+    let params = new URLSearchParams(location.search);
+    let matrix = JSON.parse(params.get("matrix"));
+    console.log(matrix)
+    /*
+    var matrix = [
+     {name: "Lee Gai Fun", age: 42, sex: "M"},
+     {name: "Laia Hamidullah", age: 27, sex: "F" },
+     {name: "Abraham Mdulla", age: 33, sex: "M" }
+    ];
+    */
+
+    var tr = d3.select(".objecttable tbody")
+     .selectAll("tr")
+     .data(matrix)
+     .enter().append("tr");
+    var td = tr.selectAll("td")
+     .data(function(d, i) { return Object.values(d); })
+     .enter().append("td")
+       .text(function(d) { return d; });
+   
+    </script>
+  </body>
+</html>
