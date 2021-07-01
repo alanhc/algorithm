@@ -3,7 +3,7 @@ Algorithm
 
 | topic | readme | demo | 
 | -------- | -------- | -------- |
-Binary Search Tree | [readme](BS_tree/README.md) |  [demo](/BS_tree/)
+Binary Search Tree | [readme](BS_tree/README.md) |  [demo](BS_tree/)
 AVL tree | |[demo](AVL_tree/)
 Heap |  |  [demo](MaxHeap/)
 Dikstra |  |  [demo](Dijkstra/)
