@@ -3,7 +3,7 @@ Algorithm
 
 | topic | readme | demo | 
 | -------- | -------- | -------- |
-Binary Search Tree | [readme](https://alanhc.github.io/algorithm/BS_tree/README.md) |  [demo](https://alanhc.github.io/algorithm/BS_tree/)
+Binary Search Tree | [readme](BS_tree/README.md) |  [demo](https://alanhc.github.io/algorithm/BS_tree/)
 AVL tree | |[demo](https://alanhc.github.io/algorithm/AVL_tree/)
 Heap |  |  [demo](https://alanhc.github.io/algorithm/MaxHeap/)
 Dikstra |  |  [demo](https://alanhc.github.io/algorithm/Dijkstra/)
