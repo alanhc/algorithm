@@ -1,7 +1,7 @@
 Algorithm
 ========
 
-| topic | readme | demo | 
+| topic | readme | links | 
 | -------- | -------- | -------- |
 Binary Search Tree | [readme](BS_tree/README.md) |  [demo](https://alanhc.github.io/algorithm/BS_tree/)
 AVL tree | |[demo](https://alanhc.github.io/algorithm/AVL_tree/)
