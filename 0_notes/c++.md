@@ -15,7 +15,7 @@ int main() {
 ```
 ## vector
 vector<int> array(n);
-array.
+array.push_back(1)
 ## map
 #include<unordered_map>
 unordered_map<int, int> h;
