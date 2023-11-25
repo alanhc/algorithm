@@ -6,6 +6,8 @@
         "functional": "cpp",
         "string": "cpp",
         "unordered_map": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "__hash_table": "cpp",
+        "__locale": "cpp"
     }
 }

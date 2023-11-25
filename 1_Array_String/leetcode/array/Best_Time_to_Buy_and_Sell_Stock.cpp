@@ -7,13 +7,16 @@ x max_profit     min
 ...
 6 5(max(6-1),4)  1
 */
-class Solution {
+class Solution
+{
 public:
-    int maxProfit(vector<int>& prices) {
+    int maxProfit(vector<int> &prices)
+    {
         int min_p = prices[0];
         int max_profit = 0;
-        for (int i=0; i<prices.size();i++) {
-            max_profit = max(prices[i]-min_p, max_profit);
+        for (int i = 0; i < prices.size(); i++)
+        {
+            max_profit = max(prices[i] - min_p, max_profit);
             min_p = min(min_p, prices[i]);
         }
         return max_profit;
