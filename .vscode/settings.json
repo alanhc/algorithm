@@ -8,6 +8,7 @@
         "unordered_map": "cpp",
         "vector": "cpp",
         "__hash_table": "cpp",
-        "__locale": "cpp"
+        "__locale": "cpp",
+        "__node_handle": "cpp"
     }
 }
