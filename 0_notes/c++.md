@@ -13,6 +13,19 @@ int main() {
     return 0;
 }
 ```
+## array
+int dp[m+1][n+1];
+memset( dp, 0, (m+1)*(n+1)*sizeof(int) );
+## set
+set<int> result;
+result.insert(1)
+## heap
+## priority queue
+priority_queue<int> pq
+pq.push()
+pq.pop() //return max, O(1)
+
+
 ## vector
 vector<int> array(n);
 array.push_back(1)
@@ -27,7 +40,7 @@ stoi("123") => 123
 unordered_map<int, int> h;
 h.first, h.second = key, value
 h[y] = i;
-find: h.count(x) -> bool
+find: h.count(x) -> bool / f.find(x)!=end
 ## check
 isalnum: check if alpha or num
 tolower
