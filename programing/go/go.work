@@ -1,8 +1,0 @@
-go 1.22.5
-
-use (
-	./data-access
-	./example/hello
-	./hello
-	./web-service-gin
-)
