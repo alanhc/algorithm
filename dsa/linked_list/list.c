@@ -16,6 +16,7 @@ void print_list(Node* node)
         printf("%d ", node->data);
         node = node->next;
     }
+    puts("");
 }
 void free_list(Node* node)
 {
@@ -34,4 +35,26 @@ void insert_tail(Node* node, int n)
         node = node->next;
     }
     node->next = create_node(n);
+}
+void insert_head(Node* dummy, int value)
+{
+    Node* new_node = create_node(value);       // 建立新節點
+    new_node->next = dummy->next;              // 指向原本第一個節點
+    dummy->next = new_node;                    // dummy 指向新的第一個節點
+}
+void delete_node(Node* node, int n)
+{
+    Node* pre = node;
+    node = node->next;
+    while (node!=NULL)
+    {
+        if (node->data==n) {
+            pre->next = node->next;
+            free(node);
+            return;
+        }
+        pre = node;
+        node = node->next;
+    }
+    
 }
