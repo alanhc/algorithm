@@ -1,6 +1,7 @@
 Algorithm
 ========
 
+[![CI](https://github.com/alanhc/algorithm/actions/workflows/ci.yml/badge.svg)](https://github.com/alanhc/algorithm/actions/workflows/ci.yml)
 
 ## Old
 | topic | readme | links | 
