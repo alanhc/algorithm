@@ -9,7 +9,6 @@ Node* create_node(int n)
     node->next = NULL;
     return node;
 }
-
 void print_list(Node* node)
 {
     puts("print list");
@@ -51,37 +50,37 @@ void insert_head(Node* dummy, int value)
 }
 void delete_node(Node* node, int n)
 {
-    if (!node) {
-        puts("Error: Cannot delete from a null list.");
-        return;
-    }
     printf("delete node %d\n", n);
     Node* pre = node;
-    node = node->next;
+    node = node->next; // 跳過 dummy head
     while (node!=NULL)
     {
+        // 如果找到要刪除的節點
         if (node->data==n) {
             pre->next = node->next;
             free(node);
             return;
         }
-        pre = node;
+        // 如果沒有找到，繼續往下走
+        pre = node; 
         node = node->next;
     }
 }
-void delete_mid(Node* node)
+void delete_mid(Node* head)
 {
+    if (!head || !head->next || !head->next->next) return;
     puts("delete mid");
-    Node* slow = node->next;
-    Node* fast = node->next->next;
-    Node* pre = node;
-    while (fast != NULL && fast->next != NULL)
+    Node* slow = head->next; // 跳過 dummy head
+    Node* fast = head->next; // 跳過 dummy head
+    Node* pre = head;
+    while (fast && fast->next)
     {
         pre = slow;
         slow = slow->next;
         fast = fast->next->next;
     }
-    if (slow!= NULL) {
+    // 如果 slow 為 NULL，表示鏈表長度為 1 或 0，無需刪除
+    if (slow) {
         pre->next = slow->next;
         free(slow);
     }   
@@ -108,20 +107,29 @@ void delete_dup(Node *head)
 }
 void swap(Node *head, int a, int b)
 {
+    puts("swap");
     if (a == b || !head || !head->next)
         return;
 
     /* 1. 找到 a、b 的前驅與本身 */
-    Node *prevA = head, *currA = head->next;
-    while (currA && currA->data != a) {
-        prevA = currA;
-        currA = currA->next;
-    }
-
-    Node *prevB = head, *currB = head->next;
-    while (currB && currB->data != b) {
-        prevB = currB;
-        currB = currB->next;
+    Node* iter = head;          /* 從 dummy 開始 */
+    Node* prevA = NULL;         /* a 的前驅 */
+    Node* prevB = NULL;         /* b 的前驅 */
+    Node* currA = NULL;         /* a 的本身 */
+    Node* currB = NULL;         /* b 的本身 */
+    while (iter) {
+        if (iter->data == a) {
+            currA = iter;        /* 找到 a */
+            if (!prevA)          /* 若 prevA 還沒找到，則記錄前驅 */
+                prevA = head;    /* dummy head */
+        } else if (iter->data == b) {
+            currB = iter;        /* 找到 b */
+            if (!prevB)          /* 若 prevB 還沒找到，則記錄前驅 */
+                prevB = head;    /* dummy head */
+        }
+        if (currA && currB)      /* 都找到了就可以退出迴圈 */
+            break;
+        iter = iter->next;
     }
 
     /* 2. 其中一個沒找到就退出 */
@@ -169,38 +177,34 @@ void reverse(Node *head)
     head->next = prev;
 }
 
-void reverseK(Node *node, int k) {
-    if (k <= 1) return;
-    Node *dummy = node;
-    Node *prev_group_end = dummy;
+/* 以 dummy 為鏈首，將串列每 k 個節點反轉 */
+void reverseK(Node *dummy, int k) {
+    puts("reverseK");
+    if (k <= 1 || !dummy || !dummy->next) return;
+
+    Node *group_prev = dummy;          /* 目前這組前一個節點（首輪為 dummy） */
+
     while (1) {
-        Node *kth = prev_group_end;
+        /* 1️⃣ 找到這組第 k 個節點 (kth) */
+        Node *kth = group_prev;
         for (int i = 0; i < k && kth; ++i)
             kth = kth->next;
-        if (!kth) break;
-        Node *group_start = prev_group_end->next;
-        Node *next_group = kth->next;
-        // Create a temporary dummy node that points to this group
-        Node *temp_dummy = create_node(-1);
-        temp_dummy->next = group_start;
-        
-        // Temporarily cut off the link to next_group
-        kth->next = NULL;
-        
-        // Reverse the group using the existing reverse function
-        reverse(temp_dummy);
-        
-        // Reconnect with the next group
-        group_start->next = next_group;
-        
-        // Connect previous group end to the new start (which was the kth node)
-        prev_group_end->next = temp_dummy->next;
-        
-        // Update prev_group_end for next iteration
-        prev_group_end = group_start;
-        
-        // Free the temporary dummy node
-        free(temp_dummy);
+        if (!kth) break;               /* 剩餘不足 k 個，不反轉 */
+
+        Node *group_next = kth->next;  /* 下一組開頭 */
+        /* 2️⃣ 就地反轉 [group_prev->next, kth] 之間的指標 */
+        Node *prev = group_next;
+        Node *curr = group_prev->next;
+        while (curr != group_next) {
+            Node *tmp = curr->next;
+            curr->next = prev;
+            prev       = curr;
+            curr       = tmp;
+        }
+        /* 3️⃣ 接回前後串列 */
+        Node *old_group_head = group_prev->next;
+        group_prev->next = kth;
+        group_prev = old_group_head;   /* 為下一輪準備：此時它是反轉後的尾 */
     }
 }
 // Merge two sorted lists using comparator
@@ -210,7 +214,7 @@ Node* merge(Node *a, Node *b, int (*cmp)(int, int)) {
     dummy.next = NULL;
     while (a && b) {
         if (cmp(a->data, b->data) <= 0) {
-            tail->next = a;
+            tail->next = a; // 接上較小的節點
             a = a->next;
         } else {
             tail->next = b;
@@ -218,7 +222,7 @@ Node* merge(Node *a, Node *b, int (*cmp)(int, int)) {
         }
         tail = tail->next;
     }
-    tail->next = a ? a : b;
+    tail->next = a ? a : b; // 接上剩餘的節點
     return dummy.next;
 }
 

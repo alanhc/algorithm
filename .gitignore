@@ -1,3 +1,48 @@
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- Editor / IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- C / C++ build artifacts ---
+*.o
+*.obj
+*.out
+*.exe
+*.gch
+*.pch
+*.d
+*.so
+*.dylib
+*.a
+*.lib
+a.out
+*.dSYM/
+
+# Compiled executables (no extension) in this repo
+/c/a
+dsa/linked_list/linked_list
+1_Array_String/two_pointers
+1_Array_String/test_two_pointers
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Archives / misc ---
 *.zip
 HW*
-*.out
+
+# Build / run logs
+dsa/linked_list/a.txt

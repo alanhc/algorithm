@@ -5,7 +5,6 @@ typedef struct Node
 } Node;
 
 Node* create_node(int n);
-Node* create_list(Node *node);
 void free_list(Node *node);
 void print_list(Node *node);
 void insert_tail(Node *node, int n);

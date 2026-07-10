@@ -1,0 +1,17 @@
+# make test 產生的 C++ 執行檔（與同名 .cpp 並存，無副檔名）
+01_two_pointers/two_pointers
+02_sliding_window/sliding_window
+03_hash_table/hash_table
+04_binary_search/binary_search
+05_stack/stack_parentheses
+06_linked_list/linked_list
+07_tree_traversal/tree_traversal
+08_graph_bfs_dfs/num_islands
+09_heap/k_largest
+10_dp/climb_stairs
+11_union_find/union_find
+12_string_array_sorting/string_array
+
+# Python / macOS 編譯產物（root .gitignore 也有，這裡再擋一次求自足）
+__pycache__/
+*.dSYM/

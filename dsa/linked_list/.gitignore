@@ -1,12 +1,7 @@
+# Build artifacts
 *.o
+linked_list
 linked_*~
 
-*
-
-!*/
-
-!*.*
-
-*.o
-
-!Makefile
+# Build / run log
+a.txt
