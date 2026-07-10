@@ -1,0 +1,53 @@
+name: CI
+
+# 每次 push 到 main 或開 PR 時，自動跑 repo 內所有 Makefile 的測試。
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 安裝 uv（Python 測試用 `uv run python` 跑，符合專案慣例）
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      # gcc / g++ 在 ubuntu-latest 已預裝；顯示版本方便除錯
+      - name: Show toolchain versions
+        run: |
+          g++ --version
+          gcc --version
+          make --version | head -1
+          uv --version
+
+      # 掃描每個 Makefile，挑最適合的 target：
+      #   有 test 就 make test；否則有 run 就 make run；再否則只 make（確認能編譯）。
+      - name: Run all Makefile tests
+        run: |
+          set -euo pipefail
+          found=0
+          while IFS= read -r mk; do
+            found=1
+            dir=$(dirname "$mk")
+            echo "::group::$dir"
+            if grep -qE '^test:' "$mk"; then
+              echo ">>> make -C $dir test"
+              make -C "$dir" test
+            elif grep -qE '^run:' "$mk"; then
+              echo ">>> make -C $dir run"
+              make -C "$dir" run
+            else
+              echo ">>> make -C $dir"
+              make -C "$dir"
+            fi
+            echo "::endgroup::"
+          done < <(find . -name Makefile -not -path '*/node_modules/*' | sort)
+          if [ "$found" -eq 0 ]; then
+            echo "No Makefile found" >&2
+            exit 1
+          fi
