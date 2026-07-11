@@ -28,29 +28,65 @@ jobs:
           make --version | head -1
           uv --version
 
-      # 掃描每個 Makefile，挑最適合的 target：
-      #   有 test 就 make test；否則有 run 就 make run；再否則只 make（確認能編譯）。
+      # 掃描每個 Makefile，挑最適合的 target（有 test 就 make test；否則 run；再否則 make），
+      # 解析每個套件的「All N tests passed」，寫成 Markdown 表格到 Job Summary。
       - name: Run all Makefile tests
         run: |
-          set -euo pipefail
-          found=0
+          set -uo pipefail
+          summary="${GITHUB_STEP_SUMMARY:-/dev/stdout}"
+          {
+            echo "## 🧪 Test Report"
+            echo ""
+            echo "| Suite | Target | Result | Status |"
+            echo "|-------|--------|--------|--------|"
+          } >> "$summary"
+          overall=0; total_tests=0; total_suites=0; found=0
           while IFS= read -r mk; do
             found=1
-            dir=$(dirname "$mk")
-            echo "::group::$dir"
-            if grep -qE '^test:' "$mk"; then
-              echo ">>> make -C $dir test"
-              make -C "$dir" test
-            elif grep -qE '^run:' "$mk"; then
-              echo ">>> make -C $dir run"
-              make -C "$dir" run
+            dir=$(dirname "$mk"); dir=${dir#./}
+            if grep -qE '^test:' "$mk"; then target=test
+            elif grep -qE '^run:' "$mk"; then target=run
+            else target=build; fi
+            echo "::group::$dir ($target)"
+            if [ "$target" = build ]; then
+              out=$(make -C "$dir" 2>&1); rc=$?
             else
-              echo ">>> make -C $dir"
-              make -C "$dir"
+              out=$(make -C "$dir" "$target" 2>&1); rc=$?
             fi
+            echo "$out"
             echo "::endgroup::"
+            [ "$rc" -ne 0 ] && overall=1
+            label=""; ran_any=0
+            while IFS= read -r line; do
+              if [[ "$line" =~ ^===\ (.+)\ ===$ ]]; then
+                label="${BASH_REMATCH[1]}"
+              elif [[ "$line" =~ ^\./([^\ ]+) ]]; then
+                [ -z "$label" ] && label="$dir → ${BASH_REMATCH[1]}"
+              elif [[ "$line" =~ ^All\ ([0-9]+)\ tests\ passed$ ]]; then
+                n="${BASH_REMATCH[1]}"; lbl="${label:-$dir}"
+                echo "| \`$lbl\` | $target | $n passed | ✅ |" >> "$summary"
+                label=""; ran_any=1
+                total_tests=$((total_tests + n)); total_suites=$((total_suites + 1))
+              fi
+            done <<< "$out"
+            if [ "$ran_any" -eq 0 ]; then
+              if [ "$rc" -eq 0 ]; then
+                echo "| \`$dir\` | $target | built & ran (smoke) | ✅ |" >> "$summary"
+              else
+                echo "| \`$dir\` | $target | FAILED | ❌ |" >> "$summary"
+              fi
+              total_suites=$((total_suites + 1))
+            elif [ "$rc" -ne 0 ]; then
+              echo "| \`$dir\` | $target | make failed | ❌ |" >> "$summary"
+            fi
           done < <(find . -name Makefile -not -path '*/node_modules/*' | sort)
-          if [ "$found" -eq 0 ]; then
-            echo "No Makefile found" >&2
-            exit 1
-          fi
+          {
+            echo ""
+            if [ "$overall" -eq 0 ]; then
+              echo "**Total: $total_tests tests across $total_suites suites — ✅ all passed**"
+            else
+              echo "**Total: $total_tests tests across $total_suites suites — ❌ failures above**"
+            fi
+          } >> "$summary"
+          if [ "$found" -eq 0 ]; then echo "No Makefile found" >&2; exit 1; fi
+          exit $overall
