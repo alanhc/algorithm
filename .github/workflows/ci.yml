@@ -49,8 +49,10 @@ jobs:
             else target=build; fi
             echo "::group::$dir ($target)"
             if [ "$target" = build ]; then
+              echo "$ make -C $dir"
               out=$(make -C "$dir" 2>&1); rc=$?
             else
+              echo "$ make -C $dir $target"
               out=$(make -C "$dir" "$target" 2>&1); rc=$?
             fi
             echo "$out"
@@ -87,6 +89,22 @@ jobs:
             else
               echo "**Total: $total_tests tests across $total_suites suites — ❌ failures above**"
             fi
+            echo ""
+            echo "<details><summary>▶ 本機重現指令</summary>"
+            echo ""
+            echo '```bash'
+            echo "make -C 1_Array_String test    # two pointers C++"
+            echo "make -C dsa/linked_list run    # linked list demo (smoke)"
+            echo "make -C google_dsa test        # 全部 24 套件 (C++ + Python)"
+            echo "make -C google_dsa test-cpp    # 只 C++"
+            echo "make -C google_dsa test-py     # 只 Python"
+            echo "# 單一套件範例："
+            echo "g++ -std=c++17 -Wall -Wextra -o google_dsa/09_heap/k_largest google_dsa/09_heap/k_largest.cpp && ./google_dsa/09_heap/k_largest"
+            echo "( cd google_dsa/09_heap && uv run python test_k_largest.py )"
+            echo '```'
+            echo ""
+            echo "> 展開任一 job step 的 log group（依資料夾折疊），每個套件上方的 \`\$ …\` 就是實際執行的指令。"
+            echo "</details>"
           } >> "$summary"
           if [ "$found" -eq 0 ]; then echo "No Makefile found" >&2; exit 1; fi
           exit $overall

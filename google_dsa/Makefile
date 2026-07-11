@@ -19,6 +19,7 @@ test: test-cpp test-py
 test-cpp: $(CPP_BINS)
 	@for bin in $(CPP_BINS); do \
 		echo "=== [C++] $$bin ==="; \
+		echo "$$ ./$$bin"; \
 		./$$bin || exit 1; \
 	done
 
@@ -29,6 +30,7 @@ test-cpp: $(CPP_BINS)
 test-py:
 	@for t in $(PY_TESTS); do \
 		echo "=== [Py] $$t ==="; \
+		echo "$$ ( cd $$(dirname $$t) && uv run python $$(basename $$t) )"; \
 		( cd $$(dirname $$t) && uv run python $$(basename $$t) ) || exit 1; \
 	done
 
